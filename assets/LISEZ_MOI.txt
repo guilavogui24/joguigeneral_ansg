@@ -1,0 +1,2 @@
+Placez votre photo dans ce dossier sous le nom: photo.jpg
+La photo apparaîtra automatiquement sur le site.

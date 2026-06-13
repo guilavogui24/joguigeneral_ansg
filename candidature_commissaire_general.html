@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>J.K. Guilavogui — Commissaire Général ANSG 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── TOKENS ─────────────────────────── */
+:root{
+  --gn:#00843A; --gn-dk:#004D24; --bg-dk:#052d0a;
+  --or:#C9A227; --or2:rgba(201,162,39,.15);
+  --wh:#F8F8F6; --dk:#171616; --mid:#505050; --sub:#909090;
+  --bdr:#E0DCD4;
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Montserrat",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+/* ── RESET ──────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;scroll-behavior:smooth}
+::selection{background:rgba(201,162,39,.22);color:var(--dk)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--gn)}
+
+body{
+  font-family:var(--sans);
+  color:var(--dk);
+  background:#fff;
+  min-height:100vh;display:flex;flex-direction:column;
+  padding-top:4px;
+}
+img{display:block;max-width:100%}
+a{text-decoration:none}
+
+/* ── GUINEA STRIP ───────────────────── */
+body::before{
+  content:"";position:fixed;
+  top:0;left:0;right:0;height:4px;
+  background:linear-gradient(to right,#CE1126 33.3%,#FCD116 33.3% 66.6%,#009A44 66.6%);
+  z-index:9999;pointer-events:none;
+}
+
+/* ── TOPBAR ─────────────────────────── */
+.topbar{
+  position:sticky;top:4px;z-index:600;
+  background:rgba(7,15,8,.96);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,5vw,80px);
+  border-bottom:1px solid rgba(201,162,39,.1);
+  transition:border-color .3s;
+}
+.topbar.scrolled{border-bottom-color:rgba(201,162,39,.25)}
+.tb-l{display:flex;align-items:center;gap:12px;cursor:pointer}
+.tb-svg{width:26px;height:26px;opacity:.75}
+.tb-nm{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+.tb-nm small{display:block;font-size:8px;font-weight:300;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:1px}
+.tb-r{display:flex;align-items:center;gap:18px}
+.tb-motto{
+  font-family:var(--serif);font-style:italic;font-size:13px;
+  color:var(--or);opacity:.65;
+}
+.tb-contact-btn{
+  font-family:var(--sans);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#fff;border:1px solid rgba(201,162,39,.3);
+  padding:7px 18px;cursor:pointer;
+  transition:all .2s;
+}
+.tb-contact-btn:hover{background:var(--or2);border-color:var(--or);color:var(--or)}
+
+/* ── SUBNAV ─────────────────────────── */
+.subnav{
+  position:sticky;top:56px;z-index:590;
+  background:#fff;border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{
+  font-family:var(--sans);font-size:9.5px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#aaa;padding:13px 22px;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  white-space:nowrap;cursor:pointer;
+  transition:color .2s,border-color .2s;
+}
+.subnav a:hover{color:var(--gn)}
+.subnav a.active{color:var(--gn-dk);border-bottom-color:var(--gn);font-weight:700}
+
+/* ── LAYOUT ─────────────────────────── */
+.section{display:none}
+.section.active{display:block}
+main{flex:1}
+
+/* ────────────────────────────────────
+   HERO
+──────────────────────────────────── */
+.hero{
+  min-height:calc(100vh - 56px - 42px);
+  background:var(--bg-dk);
+  display:grid;grid-template-columns:54% 46%;
+  position:relative;overflow:hidden;
+}
+
+/* Ghost name — signature senior dev move */
+.hero-ghost{
+  position:absolute;
+  bottom:-0.12em;left:-0.04em;
+  font-family:var(--serif);font-weight:700;font-style:italic;
+  font-size:clamp(90px,16vw,210px);
+  line-height:1;letter-spacing:-0.02em;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.055);
+  white-space:nowrap;pointer-events:none;user-select:none;
+  z-index:0;
+}
+
+/* Vertical year label — left edge */
+.hero-side-label{
+  position:absolute;left:14px;top:50%;
+  transform:translateY(-50%) rotate(-90deg);
+  font-family:var(--sans);font-size:8px;font-weight:600;
+  letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,.13);white-space:nowrap;
+  z-index:2;pointer-events:none;
+  display: none;
+}
+
+/* Scroll indicator — bottom center */
+.hero-scroll{
+  position:absolute;bottom:28px;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  z-index:3;pointer-events:none;
+  animation:scrollBounce 2.5s var(--ease) infinite;
+}
+.hero-scroll span{
+  font-family:var(--sans);font-size:8px;font-weight:500;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.22);
+}
+.scroll-line{
+  width:1px;height:36px;
+  background:linear-gradient(to bottom,rgba(201,162,39,.5),transparent);
+}
+@keyframes scrollBounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(6px)}
+}
+
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px clamp(24px,4vw,56px) 100px clamp(24px,6.5vw,88px);
+  position:relative;z-index:2;
+}
+.hero-pre{
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;
+  color:rgba(201,162,39,.75);margin-bottom:32px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-pre::before{
+  content:"";display:inline-block;
+  width:28px;height:1px;background:rgba(201,162,39,.45);
+}
+.hero-name{margin-bottom:30px}
+.hero-fn{
+  font-family:var(--sans);font-size:clamp(10px,1vw,13px);
+  font-weight:500;letter-spacing:7px;text-transform:uppercase;
+  color:rgba(255,255,255,.45);display:block;margin-bottom:5px;
+}
+.hero-ln{
+  font-family:var(--serif);font-weight:700;font-style:italic;
+  font-size:clamp(54px,8vw,100px);
+  color:#fff;line-height:.92;display:block;
+}
+.hero-rule{
+  display:flex;align-items:center;gap:10px;
+  margin:28px 0;
+}
+.hero-rule::before{
+  content:"";width:40px;height:2px;background:var(--or);
+  flex-shrink:0;
+}
+.hero-rule::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(to right,rgba(255,255,255,.06),transparent);
+}
+.hero-role{
+  font-family:var(--sans);font-size:11px;font-weight:300;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:28px;
+}
+.hero-slogan{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(18px,2.3vw,26px);font-weight:400;
+  color:var(--or);line-height:1.38;
+  margin-bottom:18px;letter-spacing:.3px;
+}
+.hero-accroche{
+  font-family:var(--sans);font-size:12.5px;font-weight:300;
+  color:rgba(255,255,255,.5);line-height:2;margin-bottom:36px;
+}
+.hero-accroche b{color:rgba(255,255,255,.82);font-weight:500}
+/* Badges */
+.hero-badges{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:36px;
+}
+.hbadge{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--sans);font-size:11px;font-weight:400;
+  color:rgba(255,255,255,.65);
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(201,162,39,.16);
+  padding:8px 16px;width:fit-content;
+  letter-spacing:.2px;
+  transition:background .25s var(--ease),border-color .25s,color .25s,transform .25s var(--ease);
+}
+.hbadge:hover{
+  background:rgba(201,162,39,.07);
+  border-color:rgba(201,162,39,.4);
+  color:rgba(255,255,255,.88);
+  transform:translateX(4px);
+}
+.hbadge svg{width:12px;height:12px;opacity:.7;flex-shrink:0}
+/* CTAs */
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  font-family:var(--sans);font-size:9.5px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;
+  padding:13px 32px;cursor:pointer;border:none;
+  display:inline-block;transition:all .2s var(--ease);
+}
+.btn-fill{color:#fff;background:var(--gn);border:2px solid var(--gn)}
+.btn-fill:hover{background:var(--gn-dk);border-color:var(--gn-dk);transform:translateY(-1px)}
+.btn-ol{color:var(--or);background:transparent;border:1px solid rgba(201,162,39,.4)}
+.btn-ol:hover{background:var(--or2);border-color:var(--or);transform:translateY(-1px)}
+
+/* Photo col — diagonal clip is the signature */
+.hero-right{
+  position:relative;overflow:hidden;
+  clip-path:polygon(clamp(28px,5vw,56px) 0, 100% 0, 100% 100%, 0 100%);
+}
+.hero-right::before{
+  content:"";position:absolute;top:0;left:0;bottom:0;
+  width:42%;
+  background:linear-gradient(to right,var(--bg-dk),transparent);
+  z-index:2;pointer-events:none;
+}
+.hero-right::after{
+  content:"";position:absolute;bottom:0;left:0;right:0;
+  height:28%;
+  background:linear-gradient(to top,var(--bg-dk),transparent);
+  z-index:2;pointer-events:none;
+}
+/* Gold corner accent */
+.hero-corner{
+  position:absolute;top:24px;right:24px;
+  width:54px;height:54px;
+  border-top:1.5px solid rgba(201,162,39,.38);
+  border-right:1.5px solid rgba(201,162,39,.38);
+  z-index:3;pointer-events:none;
+}
+.hero-photo-wrap{
+  position:absolute;inset:0;
+}
+.hero-photo-wrap img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  filter:brightness(.9) contrast(1.06) saturate(.9);
+  transition:transform 8s linear;
+}
+.hero-photo-wrap img:hover{transform:scale(1.02)}
+/* Placeholder */
+.ph{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;
+}
+.ph-circle{
+  width:140px;height:140px;border-radius:50%;
+  border:1.5px solid rgba(201,162,39,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:52px;font-style:italic;
+  color:rgba(255,255,255,.4);
+  background:rgba(0,100,40,.12);
+}
+.ph-hint{
+  font-family:var(--sans);font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(255,255,255,.22);
+  text-align:center;max-width:190px;line-height:1.6;
+}
+
+/* ────────────────────────────────────
+   QUI SUIS-JE — Bio
+──────────────────────────────────── */
+.bio{
+  background:var(--wh);
+  padding:100px clamp(20px,6vw,88px);
+  position:relative;overflow:hidden;
+}
+/* Giant decorative "16" behind the bio */
+.bio-deco{
+  position:absolute;
+  right:-0.08em;bottom:-0.2em;
+  font-family:var(--serif);font-weight:700;font-style:italic;
+  font-size:clamp(160px,25vw,340px);
+  line-height:1;color:transparent;
+  -webkit-text-stroke:1.5px rgba(0,77,36,.06);
+  pointer-events:none;user-select:none;z-index:0;
+}
+.bio-inner{
+  max-width:1200px;margin:0 auto;position:relative;z-index:1;
+  display:grid;grid-template-columns:1.6fr 1fr;
+  gap:72px;align-items:start;
+}
+.eyebrow{
+  font-family:var(--sans);font-size:9px;font-weight:600;
+  letter-spacing:3.5px;text-transform:uppercase;color:var(--gn);margin-bottom:10px;
+}
+.section-h{
+  font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:clamp(32px,4vw,50px);color:var(--dk);
+  line-height:1.08;margin-bottom:26px;
+}
+.bio-text p{
+  font-family:var(--sans);font-size:13.5px;font-weight:300;
+  line-height:2;color:var(--mid);margin-bottom:16px;
+}
+.bio-text p b{color:var(--dk);font-weight:600}
+.pull{
+  margin-top:28px;padding:18px 22px;
+  border-left:3px solid var(--or);
+  background:rgba(201,162,39,.04);
+}
+.pull p{
+  font-family:var(--serif);font-style:italic;font-size:17px;
+  color:var(--gn-dk);line-height:1.65;
+}
+/* Stats */
+.stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;background:var(--bdr);
+  margin-bottom:24px;
+}
+.stat{
+  background:#fff;padding:28px 22px;text-align:center;
+}
+.stat:first-child{background:var(--gn-dk)}
+.stat-n{
+  font-family:var(--serif);font-size:52px;font-weight:600;
+  color:var(--dk);line-height:1;margin-bottom:4px;
+}
+.stat:first-child .stat-n{color:#fff}
+.stat-l{
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--sub);
+}
+.stat:first-child .stat-l{color:rgba(255,255,255,.4)}
+
+/* ── Shortcut cards ─ */
+.shortcuts{
+  background:var(--wh);
+  padding:0 clamp(20px,6vw,88px) 80px;
+}
+.sh-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--bdr);border:1px solid var(--bdr);
+}
+.sh{
+  background:#fff;padding:30px 26px;cursor:pointer;
+  border-top:3px solid transparent;
+  transition:border-color .2s,box-shadow .25s var(--ease);
+}
+.sh:hover{border-top-color:var(--gn);box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.sh-icon{margin-bottom:14px;opacity:.7;transition:opacity .2s,transform .3s var(--ease)}
+.sh:hover .sh-icon{opacity:1;transform:scale(1.08)}
+.sh-t{
+  font-family:var(--sans);font-size:10.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--dk);margin-bottom:6px;
+}
+.sh-d{
+  font-family:var(--sans);font-size:12px;font-weight:300;
+  color:var(--sub);line-height:1.6;
+}
+.sh-a{
+  font-family:var(--sans);font-size:9px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--gn);
+  margin-top:14px;display:block;
+  transition:transform .2s var(--ease);
+}
+.sh:hover .sh-a{transform:translateX(5px)}
+
+/* ── PAGE HEADER ─ */
+.pg-hd{
+  background:var(--bg-dk);
+  padding:60px clamp(20px,6vw,88px) 52px;
+  border-bottom:1px solid rgba(201,162,39,.1);
+}
+.pg-hd-inner{max-width:1200px;margin:0 auto}
+.pg-bk{
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  margin-bottom:18px;transition:color .2s;
+}
+.pg-bk:hover{color:var(--or)}
+.pg-t{
+  font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:clamp(34px,5vw,58px);color:#fff;line-height:1.06;
+}
+.pg-s{
+  font-family:var(--sans);font-size:11px;font-weight:300;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.32);margin-top:10px;
+}
+
+/* ────────────────────────────────────
+   VISION
+──────────────────────────────────── */
+.vis-body{
+  max-width:1200px;margin:0 auto;
+  padding:72px clamp(20px,6vw,88px);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:72px;align-items:start;
+}
+.vis-body p{
+  font-family:var(--sans);font-size:13.5px;font-weight:300;
+  line-height:2;color:var(--mid);margin-bottom:18px;
+}
+.vis-body p b{color:var(--dk);font-weight:600}
+.vis-bq{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(19px,2.3vw,26px);font-weight:500;
+  color:var(--gn-dk);line-height:1.5;
+  padding:26px 0;
+  border-top:2px solid var(--or);border-bottom:1px solid var(--bdr);
+  margin-bottom:26px;
+}
+.val{display:flex;gap:16px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--bdr)}
+.val:first-of-type{border-top:1px solid var(--bdr)}
+.val svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;color:var(--gn);opacity:.7}
+.val-h{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dk);margin-bottom:3px}
+.val-d{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--mid);line-height:1.65}
+
+/* Slogan section — big editorial */
+.slogan-sec{
+  background:var(--gn-dk);
+  padding:88px clamp(20px,6vw,88px);
+  position:relative;overflow:hidden;
+}
+/* Large ghost "RRR" bg */
+.slogan-sec::before{
+  content:"R·R·R";
+  position:absolute;
+  right:-0.1em;top:50%;transform:translateY(-50%);
+  font-family:var(--serif);font-weight:700;font-style:italic;
+  font-size:clamp(80px,14vw,180px);
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.045);
+  pointer-events:none;user-select:none;white-space:nowrap;
+}
+.slogan-sec-inner{max-width:1200px;margin:0 auto}
+.sl-ey{
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;
+  color:var(--or);opacity:.65;margin-bottom:12px;
+}
+.sl-h{
+  font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:clamp(26px,3.5vw,46px);color:#fff;
+  letter-spacing:.5px;margin-bottom:56px;
+}
+.panels{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.07);
+}
+.panel{
+  background:rgba(5,18,8,.45);
+  padding:44px 30px;text-align:left;
+  transition:background .25s var(--ease);
+  position:relative;overflow:hidden;
+}
+.panel:hover{background:rgba(5,18,8,.15)}
+/* Gold top accent line on hover */
+.panel::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--or);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s var(--ease);
+}
+.panel:hover::before{transform:scaleX(1)}
+.p-n{
+  font-family:var(--sans);font-size:8px;font-weight:500;
+  letter-spacing:3px;text-transform:uppercase;color:var(--or);
+  opacity:.55;margin-bottom:12px;
+}
+.p-w{
+  font-family:var(--serif);font-size:28px;font-weight:600;
+  font-style:italic;color:#fff;margin-bottom:14px;
+}
+.p-d{
+  font-family:var(--sans);font-size:12px;font-weight:300;
+  color:rgba(255,255,255,.5);line-height:1.82;
+}
+
+/* ────────────────────────────────────
+   PRIORITÉS
+──────────────────────────────────── */
+.prio-intro{
+  padding:68px clamp(20px,6vw,88px) 44px;
+  max-width:1200px;margin:0 auto;
+}
+.prio-intro p{
+  font-family:var(--sans);font-size:14px;font-weight:300;
+  color:var(--mid);line-height:1.9;max-width:620px;
+}
+.prio-grid{
+  padding:0 clamp(20px,6vw,88px) 80px;
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--bdr);
+}
+.pc{
+  background:#fff;padding:40px 34px;
+  position:relative;overflow:hidden;
+  transition:box-shadow .3s var(--ease);
+}
+.pc:hover{box-shadow:0 8px 40px rgba(0,0,0,.08)}
+/* Animated gold top bar */
+.pc::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,var(--or),rgba(201,162,39,.3));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.pc:hover::before{transform:scaleX(1)}
+/* Ghost number */
+.pc-ghost{
+  position:absolute;top:12px;right:18px;
+  font-family:var(--serif);font-size:80px;font-weight:300;font-style:italic;
+  color:rgba(0,0,0,.035);line-height:1;pointer-events:none;user-select:none;
+}
+/* Icon box */
+.pc-icon{
+  width:50px;height:50px;
+  background:var(--gn-dk);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+}
+.pc-icon svg{width:22px;height:22px;color:#fff;opacity:.85}
+.pc-t{
+  font-family:var(--serif);font-size:22px;font-weight:600;
+  font-style:italic;color:var(--dk);margin-bottom:6px;
+}
+.pc-sub{
+  font-family:var(--sans);font-size:9.5px;font-weight:600;
+  letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--gn);margin-bottom:14px;
+}
+.pc-d{
+  font-family:var(--sans);font-size:13px;font-weight:300;
+  color:var(--mid);line-height:1.78;margin-bottom:16px;
+}
+.pc-ul{border-top:1px solid var(--bdr);padding-top:14px}
+.pc-ul li{
+  font-family:var(--sans);font-size:12px;font-weight:400;
+  color:var(--mid);padding:4px 0 4px 14px;
+  position:relative;line-height:1.6;
+}
+.pc-ul li::before{
+  content:"";position:absolute;left:0;top:12px;
+  width:4px;height:4px;background:var(--or);border-radius:50%;
+}
+
+/* ────────────────────────────────────
+   TIMELINE
+──────────────────────────────────── */
+.tl-sec{
+  padding:80px clamp(20px,6vw,88px);
+  max-width:1200px;margin:0 auto;
+}
+.tl-wrap{position:relative;padding-left:0}
+/* Vertical line */
+.tl-wrap::before{
+  content:"";position:absolute;
+  left:20px;top:8px;bottom:0;
+  width:1px;
+  background:linear-gradient(to bottom,var(--gn),rgba(0,132,58,.08));
+}
+.tl-item{
+  display:grid;grid-template-columns:44px 1fr;
+  gap:26px;padding-bottom:44px;
+}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center}
+.tl-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--gn);border:3px solid #fff;
+  box-shadow:0 0 0 2px var(--gn);
+  flex-shrink:0;margin-top:4px;z-index:1;
+  transition:transform .25s var(--ease),box-shadow .25s;
+}
+.tl-dot.gold{background:var(--or);box-shadow:0 0 0 2px var(--or)}
+.tl-item:hover .tl-dot{transform:scale(1.3);box-shadow:0 0 0 3px currentColor}
+.tl-y{
+  font-family:var(--sans);font-size:8.5px;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--gn);margin-bottom:4px;display:none;
+}
+.tl-y.gy{color:var(--or)}
+.tl-t{
+  font-family:var(--serif);font-size:20px;font-weight:600;
+  font-style:italic;color:var(--dk);margin-bottom:3px;
+}
+.tl-o{
+  font-family:var(--sans);font-size:9.5px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--sub);margin-bottom:6px;
+}
+.tl-d{
+  font-family:var(--sans);font-size:12.5px;font-weight:300;
+  color:var(--mid);line-height:1.75;
+}
+.tl-tag{
+  display:inline-block;margin-top:8px;
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--or);background:rgba(201,162,39,.07);
+  border:1px solid rgba(201,162,39,.22);padding:3px 9px;
+}
+
+/* Intl certs dark section */
+.intl{background:var(--gn-dk);padding:76px clamp(20px,6vw,88px)}
+.intl-inner{max-width:1200px;margin:0 auto}
+.intl-h{
+  font-family:var(--serif);font-size:36px;font-style:italic;
+  font-weight:600;color:#fff;margin-bottom:6px;
+}
+.intl-s{
+  font-family:var(--sans);font-size:10px;font-weight:300;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.32);margin-bottom:44px;
+}
+.cert-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.07);
+}
+.cert{
+  background:rgba(5,18,8,.45);padding:26px 22px;
+  transition:background .2s;
+}
+.cert:hover{background:rgba(5,18,8,.15)}
+.cert-ico{width:22px;height:22px;margin-bottom:12px;color:var(--or);opacity:.8}
+.cert-n{font-family:var(--sans);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#fff;margin-bottom:3px}
+.cert-o{font-family:var(--sans);font-size:11.5px;font-weight:300;color:rgba(255,255,255,.42);margin-bottom:10px}
+.cert-tag{
+  font-family:var(--sans);font-size:8.5px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--or);background:rgba(201,162,39,.07);
+  border:1px solid rgba(201,162,39,.2);padding:3px 9px;display:inline-block;
+}
+
+/* ────────────────────────────────────
+   CONTACT
+──────────────────────────────────── */
+.contact-sec{
+  padding:80px clamp(20px,6vw,88px);
+  max-width:740px;margin:0 auto;
+}
+.contact-sec>p{
+  font-family:var(--sans);font-size:13.5px;font-weight:300;
+  color:var(--mid);line-height:1.9;margin-bottom:44px;
+}
+.cc-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--bdr);margin-bottom:36px;
+}
+.cc{background:var(--wh);padding:26px 22px;text-align:center}
+.cc-ico{width:22px;height:22px;margin:0 auto 10px;color:var(--gn);opacity:.75}
+.cc-l{font-family:var(--sans);font-size:8.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:5px}
+.cc-v{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--dk)}
+.closing{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(19px,2.3vw,25px);font-weight:400;
+  color:var(--gn-dk);line-height:1.55;
+  border-left:3px solid var(--or);padding:16px 22px;
+  background:rgba(201,162,39,.04);
+}
+.closing cite{
+  display:block;margin-top:12px;
+  font-family:var(--sans);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--or);font-style:normal;
+}
+
+/* ────────────────────────────────────
+   FOOTER
+──────────────────────────────────── */
+footer{
+  background:var(--bg-dk);
+  border-top:1px solid rgba(201,162,39,.1);
+  padding:24px clamp(20px,5vw,80px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+}
+.ft-nm{font-family:var(--serif);font-size:17px;font-style:italic;font-weight:500;color:rgba(255,255,255,.75)}
+.ft-rl{font-family:var(--sans);font-size:8.5px;font-weight:300;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:3px}
+.ft-mid{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ft-tag{
+  font-family:var(--sans);font-size:8px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.07);padding:4px 9px;
+}
+.ft-motto{font-family:var(--serif);font-size:14px;font-style:italic;color:var(--or);text-align:right}
+.ft-dt{font-family:var(--sans);font-size:8.5px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2);text-align:right;margin-top:3px}
+
+/* ────────────────────────────────────
+   VOTE WIDGET — floating premium
+──────────────────────────────────── */
+.vw{
+  position:fixed;bottom:28px;right:28px;z-index:700;
+  background:rgba(7,15,8,.93);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(201,162,39,.22);
+  padding:18px 20px 16px;min-width:192px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+  transition:transform .3s var(--ease),box-shadow .3s;
+}
+.vw:hover{transform:translateY(-2px);box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.vw-lbl{
+  font-family:var(--sans);font-size:8px;font-weight:600;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:6px;
+}
+.vw-count{
+  font-family:var(--serif);font-size:42px;font-weight:600;
+  font-style:italic;color:#fff;line-height:1;margin-bottom:4px;
+}
+.vw-sub{
+  font-family:var(--sans);font-size:9.5px;font-weight:300;
+  color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:14px;
+}
+.vw-btn{
+  font-family:var(--sans);font-size:9px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--or);background:transparent;
+  border:1px solid rgba(201,162,39,.35);
+  padding:9px 16px;width:100%;cursor:pointer;
+  transition:all .2s var(--ease);
+}
+.vw-btn:hover{background:rgba(201,162,39,.1);border-color:var(--or)}
+.vw-btn:disabled{color:rgba(255,255,255,.25);border-color:rgba(255,255,255,.08);cursor:default}
+.vw-done{
+  display:none;
+  font-family:var(--serif);font-style:italic;font-size:13px;
+  color:var(--gn);text-align:center;line-height:1.5;
+}
+.vw-close{
+  position:absolute;top:8px;right:10px;
+  font-family:var(--sans);font-size:11px;font-weight:300;
+  color:rgba(255,255,255,.25);cursor:pointer;
+  transition:color .2s;line-height:1;
+  background:none;border:none;
+}
+.vw-close:hover{color:rgba(255,255,255,.6)}
+
+/* ────────────────────────────────────
+   ANIMATIONS
+──────────────────────────────────── */
+[data-reveal]{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .75s var(--ease),transform .75s var(--ease);
+}
+[data-reveal].on{opacity:1;transform:none}
+[data-reveal][data-d="1"]{transition-delay:.1s}
+[data-reveal][data-d="2"]{transition-delay:.2s}
+[data-reveal][data-d="3"]{transition-delay:.3s}
+[data-reveal][data-d="4"]{transition-delay:.4s}
+[data-reveal][data-d="5"]{transition-delay:.5s}
+[data-reveal][data-d="6"]{transition-delay:.6s}
+
+/* Hero entrance */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero-left>*{animation:fadeUp .8s var(--ease) both}
+.hero-pre{animation-delay:.15s}
+.hero-name{animation-delay:.28s}
+.hero-rule{animation-delay:.38s}
+.hero-role{animation-delay:.44s}
+.hero-slogan{animation-delay:.50s}
+.hero-accroche{animation-delay:.56s}
+.hero-badges{animation-delay:.64s}
+.hero-ctas{animation-delay:.72s}
+
+/* ────────────────────────────────────
+   RESPONSIVE
+──────────────────────────────────── */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-right{height:65vw;min-height:300px;clip-path:none}
+  .hero-left{padding:56px clamp(20px,6vw,48px) 80px}
+  .hero-right::before{display:none}
+  .hero-right::after{height:48%}
+  .bio-inner{grid-template-columns:1fr;gap:44px}
+  .vis-body{grid-template-columns:1fr}
+  .prio-grid{grid-template-columns:1fr}
+  .panels{grid-template-columns:1fr}
+  .cert-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:767px){
+  .topbar{padding:0 16px}
+  .tb-motto{display:none}
+  .subnav a{padding:12px 13px;font-size:9px;letter-spacing:1px}
+  .hero-ln{font-size:clamp(44px,13vw,64px)}
+  .hero-side-label,.hero-scroll{display:none}
+  .hero-badges{display:grid;grid-template-columns:1fr}
+  .hbadge{width:100%}
+  .hero-ctas{flex-direction:column}
+  .btn{text-align:center;padding:13px 22px}
+  .sh-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .cert-grid{grid-template-columns:1fr}
+  .cc-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center;padding:20px 16px}
+  .ft-motto,.ft-dt{text-align:center}
+  .vw{bottom:16px;right:16px;min-width:170px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <div class="tb-l" onclick="goTo('accueil')">
+    <svg class="tb-svg" viewBox="0 0 40 44" fill="none">
+      <path d="M20 2C20 2 13 9 13 17L20 15L27 17C27 9 20 2 20 2Z" fill="#C9A227" opacity=".9"/>
+      <path d="M13 17C9 17 1 21 1 30C1 30 8 26 13 27L15.5 20Z" fill="#C9A227" opacity=".65"/>
+      <path d="M27 17C31 17 39 21 39 30C39 30 32 26 27 27L24.5 20Z" fill="#C9A227" opacity=".65"/>
+      <ellipse cx="20" cy="27" rx="6.5" ry="7.5" fill="#C9A227" opacity=".85"/>
+      <path d="M14.5 34L20 43L25.5 34Z" fill="#C9A227" opacity=".55"/>
+    </svg>
+    <div class="tb-nm">J. K. Guilavogui<small>Commissaire Général · ANSG 2026</small></div>
+  </div>
+  <div class="tb-r">
+    <span class="tb-motto">Rassembler · Reconstruire · Rayonner</span>
+    <span class="tb-contact-btn" onclick="goTo('contact')">Contact</span>
+  </div>
+</div>
+
+<!-- SUBNAV -->
+<nav class="subnav">
+  <a data-sec="accueil" class="active">Accueil</a>
+  <a data-sec="vision">Ma Vision</a>
+  <a data-sec="priorites">Priorités</a>
+  <a data-sec="parcours">Parcours</a>
+  <a data-sec="contact">Contact</a>
+</nav>
+
+<main>
+
+<!-- ==================
+     ACCUEIL
+================== -->
+<section id="sec-accueil" class="section active">
+
+  <div class="hero">
+    <!-- Ghost name texture -->
+    <div class="hero-ghost" aria-hidden="true">Guilavogui</div>
+    <!-- Vertical label -->
+    <div class="hero-side-label" aria-hidden="true">ANSG · Mamou · 2026</div>
+
+    <!-- LEFT TEXT -->
+    <div class="hero-left">
+      <div class="hero-pre">Assemblée Générale ANSG &nbsp;·&nbsp; Mamou, Juin 2026</div>
+      <div class="hero-name">
+        <span class="hero-fn">Joseph Kognon</span>
+        <span class="hero-ln">Guilavogui</span>
+      </div>
+      <div class="hero-rule"></div>
+      <p class="hero-role">Candidat au poste de<br>Commissaire Général de l'ANSG</p>
+      <p class="hero-slogan">Rassembler &nbsp;·&nbsp; Reconstruire &nbsp;·&nbsp; Rayonner</p>
+      <p class="hero-accroche">
+        <b>16 années</b> de service scout. Une expérience<br>
+        <b>nationale et internationale</b>. Une vision ambitieuse<br>
+        pour l'ANSG de demain.
+      </p>
+      <div class="hero-badges">
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          17 pays visités — expérience internationale
+        </div>
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Réseau Global Communications Network · OMMS
+        </div>
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Certifié SFH2 &amp; Bonne Gouvernance
+        </div>
+        <div class="hbadge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Architecte de l'identité numérique ANSG
+        </div>
+      </div>
+      <div class="hero-ctas">
+        <span class="btn btn-fill" onclick="goTo('vision')">Découvrir ma vision →</span>
+        <span class="btn btn-ol" onclick="goTo('priorites')">Mes priorités</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PHOTO -->
+    <div class="hero-right">
+      <div class="hero-corner"></div>
+      <div class="hero-photo-wrap">
+        <img src="assets/photo.png" alt="Joseph Kognon Guilavogui — Candidat Commissaire Général ANSG"
+          onerror="this.parentElement.innerHTML='<div class=\'ph\'><div class=\'ph-circle\'>JG</div><p class=\'ph-hint\'>Placez votre photo dans assets/photo.jpg</p></div>'">
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero-scroll" aria-hidden="true">
+      <span>Défiler</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <!-- BIO -->
+  <div class="bio">
+    <div class="bio-deco" aria-hidden="true">16</div>
+    <div class="bio-inner">
+      <div class="bio-text" data-reveal>
+        <p class="eyebrow">Qui suis-je ?</p>
+        <h2 class="section-h">Un leader<br>forgé sur le terrain</h2>
+        <p>Depuis <b>2008</b>, je me suis engagé corps et âme dans le Scoutisme guinéen. De simple scout dans la région de Kindia à responsable national, chaque étape m'a appris que le service n'est pas un titre — c'est un choix quotidien.</p>
+        <p>Architecte de l'identité visuelle de l'ANSG, formateur certifié, représentant international dans <b>17 pays</b> : j'ai bâti une expérience rare, à la croisée du terrain local et des instances mondiales du Scoutisme.</p>
+        <p>Je me porte candidat non pas pour occuper un poste, mais pour <b>transformer une organisation</b>. Avec vous, pour vous, pour nos scouts.</p>
+        <div class="pull">
+          <p>« Le scoutisme ne change pas le monde. Il change les personnes qui changeront le monde. »</p>
+        </div>
+      </div>
+      <div data-reveal data-d="2">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-n" data-count="16">16</div>
+            <div class="stat-l">Années de service</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n" data-count="17">17</div>
+            <div class="stat-l">Pays représentés</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n" data-count="6">6</div>
+            <div class="stat-l">Formations certifiées</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n" data-count="4">4</div>
+            <div class="stat-l">Piliers stratégiques</div>
+          </div>
+        </div>
+        <span class="btn btn-fill" style="display:inline-block;margin-top:18px" onclick="goTo('parcours')">Voir mon parcours complet →</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHORTCUTS -->
+  <div class="shortcuts">
+    <div class="sh-grid">
+      <div class="sh" onclick="goTo('vision')" data-reveal>
+        <div class="sh-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00843A" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <div class="sh-t">Ma Vision</div>
+        <div class="sh-d">Les motivations profondes et les valeurs qui guident ma candidature pour l'ANSG.</div>
+        <span class="sh-a">Explorer →</span>
+      </div>
+      <div class="sh" onclick="goTo('priorites')" data-reveal data-d="2">
+        <div class="sh-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00843A" stroke-width="1.4"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="sh-t">Priorités</div>
+        <div class="sh-d">4 piliers stratégiques concrets pour moderniser, renforcer et faire rayonner l'ANSG.</div>
+        <span class="sh-a">Découvrir →</span>
+      </div>
+      <div class="sh" onclick="goTo('parcours')" data-reveal data-d="3">
+        <div class="sh-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00843A" stroke-width="1.4"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </div>
+        <div class="sh-t">Parcours</div>
+        <div class="sh-d">16 années d'engagement du terrain local aux instances internationales du Scoutisme.</div>
+        <span class="sh-a">Consulter →</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ==================
+     VISION
+================== -->
+<section id="sec-vision" class="section">
+  <div class="pg-hd">
+    <div class="pg-hd-inner">
+      <span class="pg-bk" onclick="goTo('accueil')">← Retour</span>
+      <h1 class="pg-t">Ma Vision</h1>
+      <p class="pg-s">Pourquoi je me présente &amp; ce en quoi je crois</p>
+    </div>
+  </div>
+  <div class="vis-body">
+    <div data-reveal>
+      <p class="eyebrow">Motivations</p>
+      <h2 class="section-h">Une conviction,<br>pas une ambition</h2>
+      <p>J'ai vu l'ANSG traverser des moments difficiles — des opportunités manquées, des ressources gaspillées, des jeunes scouts insuffisamment accompagnés. Ce n'est pas une critique : c'est un constat partagé par ceux qui aiment cette organisation.</p>
+      <p>Aujourd'hui, je me présente parce que je crois profondément que <b>l'ANSG a les ressources humaines, l'histoire et le potentiel</b> pour devenir une organisation de référence en Afrique de l'Ouest. Il nous manque l'organisation, la vision et la volonté.</p>
+      <p>Fort de 16 années de service, de certifications en gouvernance et en développement scout, et d'une expérience internationale dans <b>17 pays</b>, je me sens prêt à porter ce projet collectif.</p>
+      <p>Ce n'est pas une candidature personnelle. C'est une <b>invitation à bâtir ensemble</b> une ANSG moderne, transparente et rayonnante.</p>
+    </div>
+    <div data-reveal data-d="2">
+      <p class="vis-bq">« Je ne veux pas simplement gérer l'ANSG. Je veux la transformer — avec chaque chef, chaque scout, chaque région. »</p>
+      <div class="val">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div><div class="val-h">Intégrité</div><div class="val-d">Gouvernance transparente, comptes rendus réguliers, gestion rigoureuse des ressources.</div></div>
+      </div>
+      <div class="val">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3M6.343 6.343l-.707-.707M12 21v-1"/><circle cx="12" cy="12" r="4"/></svg>
+        <div><div class="val-h">Innovation</div><div class="val-d">Numérique, modernisation des formations, outils adaptés aux réalités guinéennes.</div></div>
+      </div>
+      <div class="val">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div><div class="val-h">Inclusion</div><div class="val-d">Toutes les régions, tranches d'âge et sensibilités — représentées et entendues.</div></div>
+      </div>
+      <div class="val">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+        <div><div class="val-h">Ouverture</div><div class="val-d">Renforcer nos liens avec l'OMMS, les OSN voisines, les partenaires internationaux.</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- SLOGAN -->
+  <div class="slogan-sec">
+    <div class="slogan-sec-inner">
+      <p class="sl-ey">Le projet en trois mots</p>
+      <h2 class="sl-h">Rassembler · Reconstruire · Rayonner</h2>
+      <div class="panels">
+        <div class="panel" data-reveal>
+          <div class="p-n">01 — Pilier</div>
+          <div class="p-w">Rassembler</div>
+          <div class="p-d">Réconcilier les sensibilités internes, fédérer toutes les régions autour d'un projet commun, renforcer la cohésion nationale du mouvement scout guinéen.</div>
+        </div>
+        <div class="panel" data-reveal data-d="2">
+          <div class="p-n">02 — Pilier</div>
+          <div class="p-w">Reconstruire</div>
+          <div class="p-d">Moderniser les structures, clarifier les rôles et responsabilités, mettre en place une gouvernance saine et des outils de gestion performants.</div>
+        </div>
+        <div class="panel" data-reveal data-d="3">
+          <div class="p-n">03 — Pilier</div>
+          <div class="p-w">Rayonner</div>
+          <div class="p-d">Renforcer la visibilité internationale de l'ANSG, développer des partenariats stratégiques, faire de la Guinée un acteur reconnu du Scoutisme mondial.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================
+     PRIORITÉS
+================== -->
+<section id="sec-priorites" class="section">
+  <div class="pg-hd">
+    <div class="pg-hd-inner">
+      <span class="pg-bk" onclick="goTo('accueil')">← Retour</span>
+      <h1 class="pg-t">Mes Priorités</h1>
+      <p class="pg-s">4 piliers stratégiques pour l'ANSG de demain</p>
+    </div>
+  </div>
+  <div class="prio-intro" data-reveal>
+    <p>Ces quatre piliers forment un programme cohérent et réaliste, fondé sur mon expérience de terrain et ma connaissance des standards internationaux du Scoutisme. Chaque priorité est assortie d'actions concrètes et mesurables.</p>
+  </div>
+  <div class="prio-grid">
+    <div class="pc" data-reveal>
+      <div class="pc-ghost">01</div>
+      <div class="pc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="pc-t">Gouvernance &amp; Transparence</div>
+      <div class="pc-sub">Pilier 1 — Fondation</div>
+      <p class="pc-d">Bâtir une organisation solide sur des bases institutionnelles saines. La confiance se mérite par les actes, pas les discours.</p>
+      <ul class="pc-ul">
+        <li>Système de reporting régulier aux membres</li>
+        <li>Révision et actualisation des textes statutaires</li>
+        <li>Audit financier annuel indépendant et public</li>
+        <li>Redynamisation des structures régionales</li>
+      </ul>
+    </div>
+    <div class="pc" data-reveal data-d="2">
+      <div class="pc-ghost">02</div>
+      <div class="pc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="pc-t">Digitalisation &amp; Modernisation</div>
+      <div class="pc-sub">Pilier 2 — Innovation</div>
+      <p class="pc-d">Placer l'ANSG dans le XXIe siècle. Le numérique n'est plus un luxe — c'est une nécessité pour gérer, former et communiquer.</p>
+      <ul class="pc-ul">
+        <li>Plateforme de gestion des membres et unités</li>
+        <li>Formation en ligne des chefs scouts (e-learning)</li>
+        <li>Refonte complète de la communication digitale</li>
+        <li>Archives numériques et mémoire institutionnelle</li>
+      </ul>
+    </div>
+    <div class="pc" data-reveal data-d="3">
+      <div class="pc-ghost">03</div>
+      <div class="pc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="pc-t">Autonomie Financière</div>
+      <div class="pc-sub">Pilier 3 — Durabilité</div>
+      <p class="pc-d">Réduire la dépendance aux financements ponctuels. Une ANSG solide est une ANSG qui finance ses propres ambitions.</p>
+      <ul class="pc-ul">
+        <li>Création d'un fonds de développement scout national</li>
+        <li>Partenariats avec les entreprises guinéennes</li>
+        <li>Optimisation du recouvrement des cotisations</li>
+        <li>Accès aux fonds OMMS et partenaires internationaux</li>
+      </ul>
+    </div>
+    <div class="pc" data-reveal data-d="4">
+      <div class="pc-ghost">04</div>
+      <div class="pc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="pc-t">Rayonnement International</div>
+      <div class="pc-sub">Pilier 4 — Influence</div>
+      <p class="pc-d">Faire entendre la voix de la Guinée dans les instances mondiales. Nos jeunes méritent une organisation qui leur ouvre le monde.</p>
+      <ul class="pc-ul">
+        <li>Présence renforcée aux forums OMMS / Région Afrique</li>
+        <li>Développement d'échanges scouts inter-pays</li>
+        <li>Programme Messagers de Paix OMMS à grande échelle</li>
+        <li>Accueil d'événements scouts régionaux en Guinée</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ==================
+     PARCOURS
+================== -->
+<section id="sec-parcours" class="section">
+  <div class="pg-hd">
+    <div class="pg-hd-inner">
+      <span class="pg-bk" onclick="goTo('accueil')">← Retour</span>
+      <h1 class="pg-t">Mon Parcours</h1>
+      <p class="pg-s">16 années d'engagement — national &amp; international</p>
+    </div>
+  </div>
+  <div class="tl-sec">
+    <p class="eyebrow" style="margin-bottom:40px">Chronologie</p>
+    <div class="tl-wrap">
+      <div class="tl-item" data-reveal>
+        <div class="tl-dot-col"><div class="tl-dot"></div></div>
+        <div>
+          <div class="tl-y">Depuis 2008</div>
+          <div class="tl-t">Promesse scout</div>
+          <div class="tl-o">ANSG — </div>
+          <div class="tl-d">Adhésion au mouvement scout. Début d'un engagement qui ne s'est jamais démenti.</div>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="1">
+        <div class="tl-dot-col"><div class="tl-dot"></div></div>
+        <div>
+          <div class="tl-y">2010 – 2014</div>
+          <div class="tl-t">Chef d'unité &amp; Formateur régional</div>
+          <div class="tl-o">ANSG — Conakry</div>
+          <div class="tl-d">Encadrement d'unités scoutes, animation de formations de base pour chefs scouts, développement du programme éducatif local.</div>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="2">
+        <div class="tl-dot-col"><div class="tl-dot gold"></div></div>
+        <div>
+          <div class="tl-y gy">2014 – 2018</div>
+          <div class="tl-t">Responsable Communication Nationale</div>
+          <div class="tl-o">ANSG — Direction Nationale</div>
+          <div class="tl-d">Refonte complète de l'identité visuelle de l'ANSG. Création des outils de communication officiels. Lancement des plateformes numériques de l'organisation.</div>
+          <span class="tl-tag">Architecte identité numérique ANSG</span>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="3">
+        <div class="tl-dot-col"><div class="tl-dot gold"></div></div>
+        <div>
+          <div class="tl-y gy">2016</div>
+          <div class="tl-t">Désignation Messager de Paix</div>
+          <div class="tl-o">Organisation Mondiale du Mouvement Scout (OMMS)</div>
+          <div class="tl-d">Accréditation internationale comme Messager de Paix dans le cadre du programme mondial de l'OMMS — engagement pour la paix, la tolérance et le développement durable.</div>
+          <span class="tl-tag">OMMS · Programme Messagers de Paix</span>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="4">
+        <div class="tl-dot-col"><div class="tl-dot gold"></div></div>
+        <div>
+          <div class="tl-y gy">2017 – 2019</div>
+          <div class="tl-t">Membre du Global Communications Network</div>
+          <div class="tl-o">OMMS — Réseau International</div>
+          <div class="tl-d">Représentation de la Guinée dans les instances de communication de l'OMMS. Échanges avec des homologues de 17 pays.</div>
+          <span class="tl-tag">OMMS · GCN International</span>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="5">
+        <div class="tl-dot-col"><div class="tl-dot"></div></div>
+        <div>
+          <div class="tl-y">2019 – 2022</div>
+          <div class="tl-t">Formateur National &amp; Responsable Programme</div>
+          <div class="tl-o">ANSG — Direction Nationale</div>
+          <div class="tl-d">Formations avancées (Wood Badge, formations thématiques). Développement du programme éducatif national. Encadrement des équipes régionales.</div>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal data-d="6">
+        <div class="tl-dot-col"><div class="tl-dot gold"></div></div>
+        <div>
+          <div class="tl-y gy">2022 – 2024</div>
+          <div class="tl-t">Certifications SFH2 &amp; Bonne Gouvernance</div>
+          <div class="tl-o">Formation internationale certifiante</div>
+          <div class="tl-d">Obtention des certifications en gestion stratégique SFH2 et en Bonne Gouvernance. Application directe dans la structuration des instances de l'ANSG.</div>
+          <span class="tl-tag">SFH2 Certifié · Bonne Gouvernance</span>
+        </div>
+      </div>
+      <div class="tl-item" data-reveal>
+        <div class="tl-dot-col"><div class="tl-dot gold"></div></div>
+        <div>
+          <div class="tl-y gy">2026</div>
+          <div class="tl-t">Candidature au poste de Commissaire Général</div>
+          <div class="tl-o">ANSG — Assemblée Générale · Mamou</div>
+          <div class="tl-d">Fort de 16 années d'expérience et d'une vision claire, je me présente pour guider l'ANSG vers une nouvelle ère de croissance et de rayonnement.</div>
+          <span class="tl-tag">Rassembler · Reconstruire · Rayonner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intl">
+    <div class="intl-inner">
+      <h2 class="intl-h">Expérience Internationale</h2>
+      <p class="intl-s">Formations &amp; représentations dans 17 pays</p>
+      <div class="cert-grid">
+        <div class="cert" data-reveal>
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div class="cert-n">Messager de Paix</div>
+          <div class="cert-o">Organisation Mondiale du Mouvement Scout</div>
+          <span class="cert-tag">OMMS International</span>
+        </div>
+        <div class="cert" data-reveal data-d="1">
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="2"/></svg>
+          <div class="cert-n">Global Communications Network</div>
+          <div class="cert-o">OMMS — Réseau Mondial</div>
+          <span class="cert-tag">GCN Member</span>
+        </div>
+        <div class="cert" data-reveal data-d="2">
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <div class="cert-n">Certification SFH2</div>
+          <div class="cert-o">Gestion stratégique des OSN</div>
+          <span class="cert-tag">Certifié SFH2</span>
+        </div>
+        <div class="cert" data-reveal data-d="3">
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="cert-n">Bonne Gouvernance</div>
+          <div class="cert-o">Formation internationale certifiante</div>
+          <span class="cert-tag">Gouvernance OSN</span>
+        </div>
+        <div class="cert" data-reveal data-d="4">
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <div class="cert-n">Identité Numérique ANSG</div>
+          <div class="cert-o">Architecture &amp; communication digitale</div>
+          <span class="cert-tag">Architecte ANSG</span>
+        </div>
+        <div class="cert" data-reveal data-d="5">
+          <svg class="cert-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/></svg>
+          <div class="cert-n">Représentation Sous-régionale</div>
+          <div class="cert-o">Forums OMMS Région Afrique</div>
+          <span class="cert-tag">17 Pays</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================
+     CONTACT
+================== -->
+<section id="sec-contact" class="section">
+  <div class="pg-hd">
+    <div class="pg-hd-inner">
+      <span class="pg-bk" onclick="goTo('accueil')">← Retour</span>
+      <h1 class="pg-t">Contact</h1>
+      <p class="pg-s">Échanger, questionner, soutenir</p>
+    </div>
+  </div>
+  <div class="contact-sec">
+    <p class="eyebrow">Restons en contact</p>
+    <h2 class="section-h">Une question ?<br>Un échange ?</h2>
+    <p>Je suis disponible pour toute question sur ma vision, mon programme ou mon parcours. La transparence et le dialogue sont au cœur de ma démarche.</p>
+    <div class="cc-grid">
+      <div class="cc">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div class="cc-l">Email</div>
+        <div class="cc-v">guilavoguijoseph@gmail.com</div>
+      </div>
+      <div class="cc">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="cc-l">Localisation</div>
+        <div class="cc-v">Conakry, Guinée</div>
+      </div>
+      <div class="cc">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="cc-l">Mouvement</div>
+        <div class="cc-v">ANSG · Toujours Prêt</div>
+      </div>
+      <div class="cc">
+        <svg class="cc-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="cc-l">Assemblée</div>
+        <div class="cc-v">Mamou · Juin 2026</div>
+      </div>
+    </div>
+    <div class="closing">
+      « Ensemble, nous pouvons construire une ANSG à la hauteur de nos ambitions et de la confiance de nos scouts. »
+      <cite>— Joseph Kognon Guilavogui</cite>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div>
+    <div class="ft-nm">Joseph Kognon Guilavogui</div>
+    <div class="ft-rl">Candidat · Commissaire Général ANSG · 2026</div>
+  </div>
+  <div class="ft-mid">
+    <span class="ft-tag">Toujours Prêt</span>
+    <span class="ft-tag">ANSG · Guinée</span>
+    <span class="ft-tag">OMMS</span>
+    <span class="ft-tag">Scoutisme Mondial</span>
+  </div>
+  <div>
+    <div class="ft-motto">Rassembler · Reconstruire · Rayonner</div>
+    <div class="ft-dt">Assemblée Générale · Mamou · Juin 2026</div>
+  </div>
+</footer>
+
+<!-- ==================
+     VOTE WIDGET
+================== -->
+<div class="vw" id="vw" role="complementary" aria-label="Soutien à la candidature">
+  <button class="vw-close" onclick="document.getElementById('vw').style.display='none'" aria-label="Fermer">✕</button>
+  <div class="vw-lbl">Soutiens exprimés</div>
+  <div class="vw-count" id="vw-count">73</div>
+  <div class="vw-sub">personnes soutiennent<br>cette candidature</div>
+  <button class="vw-btn" id="vw-btn">Je soutiens +</button>
+  <div class="vw-done" id="vw-done">✓ Merci pour votre soutien !</div>
+</div>
+
+<script>
+/* ── NAVIGATION ─────────────────────── */
+function goTo(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('[data-sec]').forEach(a=>a.classList.remove('active'));
+  const s=document.getElementById('sec-'+id);
+  if(s)s.classList.add('active');
+  document.querySelectorAll('[data-sec="'+id+'"]').forEach(a=>a.classList.add('active'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(triggerReveals,80);
+}
+document.querySelectorAll('[data-sec]').forEach(el=>{
+  el.addEventListener('click',e=>{e.preventDefault();goTo(el.dataset.sec)});
+});
+
+/* ── TOPBAR SCROLL EFFECT ───────────── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('topbar').classList.toggle('scrolled',window.scrollY>60);
+},{passive:true});
+
+/* ── SCROLL REVEAL ──────────────────── */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+      // trigger stat counters if inside
+      e.target.querySelectorAll('[data-count]').forEach(el=>{
+        animCount(el,parseInt(el.dataset.count));
+      });
+    }
+  });
+},{threshold:.12,rootMargin:'0px 0px -30px 0px'});
+
+function triggerReveals(){
+  document.querySelectorAll('.section.active [data-reveal]').forEach(el=>{
+    io.observe(el);
+    // Immediately reveal if already in viewport
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight*.9){el.classList.add('on')}
+  });
+}
+window.addEventListener('load',()=>{
+  triggerReveals();
+  // Also fire counts on visible stats
+  document.querySelectorAll('.section.active [data-count]').forEach(el=>{
+    animCount(el,parseInt(el.dataset.count));
+  });
+});
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('.section.active [data-reveal]:not(.on)').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight*.9)el.classList.add('on');
+  });
+},{passive:true});
+
+/* ── COUNT-UP ANIMATION ─────────────── */
+function animCount(el,target,dur=1400){
+  const start=performance.now();
+  const from=0;
+  (function tick(now){
+    const p=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(from+(target-from)*ease);
+    if(p<1)requestAnimationFrame(tick);
+  })(start);
+}
+
+/* ── HERO PARALLAX ──────────────────── */
+(function(){
+  const hw=document.querySelector('.hero-right');
+  if(!hw)return;
+  window.addEventListener('scroll',()=>{
+    const sy=window.pageYOffset;
+    if(sy<window.innerHeight*1.2)hw.style.transform='translateY('+(sy*.1)+'px)';
+  },{passive:true});
+})();
+
+/* ── VOTE WIDGET ────────────────────── */
+(function(){
+  const BASE=73;
+  const KC='jkg_ct_v3',KV='jkg_vd_v3';
+  const countEl=document.getElementById('vw-count');
+  const btnEl=document.getElementById('vw-btn');
+  const doneEl=document.getElementById('vw-done');
+  const stored=parseInt(localStorage.getItem(KC)||BASE);
+  const voted=localStorage.getItem(KV)==='1';
+  // Animate initial count
+  animCount(countEl,stored);
+  if(voted){
+    btnEl.style.display='none';
+    doneEl.style.display='block';
+  }
+  btnEl.addEventListener('click',()=>{
+    const n=stored+1;
+    localStorage.setItem(KC,n);localStorage.setItem(KV,'1');
+    animCount(countEl,n,600);
+    btnEl.style.display='none';
+    doneEl.style.display='block';
+  });
+})();
+</script>
+</body>
+</html>
